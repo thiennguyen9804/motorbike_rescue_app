@@ -37,9 +37,11 @@ class PickTimeScreenState extends State<PickTimeScreen> {
     if (pickedDate != null) {
       final TimeOfDay? pickedTime = await showTimePicker(
         context: context,
-        initialTime: TimeOfDay.fromDateTime(isFrom
-            ? selectedFromDateTime ?? DateTime.now()
-            : selectedToDateTime ?? DateTime.now()),
+        initialTime: TimeOfDay.fromDateTime(
+          isFrom
+              ? selectedFromDateTime ?? DateTime.now()
+              : selectedToDateTime ?? DateTime.now(),
+        ),
         builder: (BuildContext context, Widget? child) {
           return Theme(
             data: pickerTheme,
@@ -146,15 +148,19 @@ class PickTimeScreenState extends State<PickTimeScreen> {
   Widget searchBars() {
     return Column(
       children: [
-        dateTimePicker(context, true, selectedFromDateTime),
+        dateTimePicker(context, true, selectedFromDateTime, null),
         SizedBox(height: 10),
-        dateTimePicker(context, false, selectedToDateTime),
+        dateTimePicker(context, false, selectedToDateTime, AppTheme.textPos),
       ],
     );
   }
 
   Widget dateTimePicker(
-      BuildContext context, bool isFrom, DateTime? selectedDateTime) {
+    BuildContext context,
+    bool isFrom,
+    DateTime? selectedDateTime,
+    Color? textColor,
+  ) {
     return GestureDetector(
       onTap: () => _selectDateTime(context, isFrom),
       child: AbsorbPointer(
@@ -174,7 +180,7 @@ class PickTimeScreenState extends State<PickTimeScreen> {
                 ? formatDateTime(selectedDateTime)
                 : 'Thứ Bảy, 22/02/2025 - 14:30',
             style: TextStyle(
-              color: Color(0xff444444),
+              color: textColor ?? Color(0xff444444),
               fontSize: 16,
             ),
           ),

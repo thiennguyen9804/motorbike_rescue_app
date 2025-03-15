@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:motorbike_rescue_app/core/configs/theme/app_theme.dart';
+import 'package:motorbike_rescue_app/presentation/home/home_wrapper.dart';
+import 'package:motorbike_rescue_app/presentation/home/page/map_screen.dart';
 import 'package:motorbike_rescue_app/presentation/home/page/pick_time_screen.dart';
 
 void main() {
@@ -33,7 +35,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: [
         const Locale('vi', ''), // Vietnamese
       ],
-      home: PickTimeScreen(),
+      home: HomeWrapper(),
     );
   }
 }

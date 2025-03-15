@@ -4,7 +4,7 @@ import 'package:motorbike_rescue_app/presentation/home/page/device_screen.dart';
 import 'package:motorbike_rescue_app/presentation/home/page/map_screen.dart';
 
 final screens = [
-  const MapScreen(),
+  MapScreen(),
   const DeviceScreen(),
 ];
 
