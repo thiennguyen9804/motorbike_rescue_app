@@ -3,8 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:motorbike_rescue_app/core/configs/theme/app_theme.dart';
 import 'package:motorbike_rescue_app/presentation/home/home_wrapper.dart';
-import 'package:motorbike_rescue_app/presentation/home/page/map_screen.dart';
-import 'package:motorbike_rescue_app/presentation/home/page/pick_time_screen.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
@@ -33,7 +31,7 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: [
-        const Locale('vi', ''), // Vietnamese
+        const Locale('vi', ''),
       ],
       home: HomeWrapper(),
     );

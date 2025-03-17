@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static final Color bgPos = const Color(0xff14AE5C);
   static final Color textPos = const Color(0xff14AE5C);
+  static final Color bgDanger2nd = const Color(0xffC00F0C);
+  static final Color bgDanger = const Color(0xffEC221F);
+
   // static final bigText = TextStyle(
   //   color: Color(0xff738F81),
   //   fontSize: 52,
