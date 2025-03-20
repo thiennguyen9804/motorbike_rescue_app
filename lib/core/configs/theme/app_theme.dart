@@ -5,6 +5,8 @@ class AppTheme {
   static final Color textPos = const Color(0xff14AE5C);
   static final Color bgDanger2nd = const Color(0xffC00F0C);
   static final Color bgDanger = const Color(0xffEC221F);
+  static final Color txtOnWarning = const Color(0xff401B01);
+  static final Color bgWarning = const Color(0xffE8B931);
 
   // static final bigText = TextStyle(
   //   color: Color(0xff738F81),

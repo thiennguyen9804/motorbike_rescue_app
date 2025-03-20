@@ -54,15 +54,16 @@ class _HomeWrapperState extends State<HomeWrapper> {
               }
             },
             child: BlocListener<UserEmergencyCubit, UserEmergencyState>(
-                listener: (context, state) {
-                  switch (state) {
-                    case UserEmergencyConfirm():
-                      userEmgInstance.showEmergencyBottomSheet(context, 30);
-                      break;
-                    default:
-                  }
-                },
-                child: child),
+              listener: (context, state) {
+                switch (state) {
+                  case UserEmergencyConfirm():
+                    userEmgInstance.showEmergencyBottomSheet(context, 30);
+                    break;
+                  default:
+                }
+              },
+              child: child,
+            ),
           ),
         );
       },
