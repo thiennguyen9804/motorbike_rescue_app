@@ -1,20 +1,16 @@
 import 'dart:async';
 
-class TimerInstance {
-  TimerInstance._privateConstructor();
-
-  static final TimerInstance _instance = TimerInstance._privateConstructor();
-
-  factory TimerInstance() {
-    return _instance;
-  }
-
+class TimerHelper {
   late int _remainingTime;
   late Timer _timer;
   final StreamController<int> _timerController =
       StreamController<int>.broadcast();
 
   Stream<int> get timerStream => _timerController.stream;
+
+  Timer getTimer() {
+    return _timer;
+  }
 
   void startTimer(int duration) {
     _remainingTime = duration;

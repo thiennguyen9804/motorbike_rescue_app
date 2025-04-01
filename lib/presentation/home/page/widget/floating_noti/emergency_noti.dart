@@ -3,33 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:motorbike_rescue_app/core/configs/theme/app_theme.dart';
 import 'package:motorbike_rescue_app/presentation/home/helper_object/timer_helper.dart';
 
-class NeedConfirmNoti extends StatefulWidget {
-  final int duration;
-  final TimerHelper sharedTimer;
+class EmergencyNoti extends StatefulWidget {
   final VoidCallback onTap;
-  const NeedConfirmNoti({
+  const EmergencyNoti({
     super.key,
-    required this.duration,
-    required this.sharedTimer,
     required this.onTap,
   });
   @override
-  _NeedConfirmNotiState createState() => _NeedConfirmNotiState();
+  _EmergencyNotiState createState() => _EmergencyNotiState();
 }
 
-class _NeedConfirmNotiState extends State<NeedConfirmNoti> {
+class _EmergencyNotiState extends State<EmergencyNoti> {
   late StreamSubscription<int> _timerSubscription;
   int _remainingTime = 30;
-
-  @override
-  void initState() {
-    super.initState();
-    _timerSubscription = widget.sharedTimer.timerStream.listen((remainingTime) {
-      setState(() {
-        _remainingTime = remainingTime;
-      });
-    });
-  }
 
   @override
   void dispose() {
@@ -51,7 +37,7 @@ class _NeedConfirmNotiState extends State<NeedConfirmNoti> {
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppTheme.bgWarning,
+              color: AppTheme.icDanger,
               borderRadius: BorderRadius.circular(20),
             ),
             child: Row(
@@ -60,28 +46,32 @@ class _NeedConfirmNotiState extends State<NeedConfirmNoti> {
                 Row(
                   children: [
                     Icon(
-                      Icons.warning_rounded,
-                      color: AppTheme.txtOnWarning,
+                      Icons.warning_amber_rounded,
+                      color: AppTheme.onDanger,
+                      size: 50,
                     ),
                     const SizedBox(width: 8),
-                    Text(
-                      '$_remainingTime',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: AppTheme.txtOnWarning,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '69m',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: AppTheme.onDanger,
+                          ),
+                        ),
+                        Text(
+                          'Tai nạn tại Đường XYZ',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: AppTheme.onDanger,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
-                ),
-                Text(
-                  'Hãy xác nhận bạn\nvẫn đang an toàn',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: AppTheme.txtOnWarning,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
                 ),
               ],
             ),

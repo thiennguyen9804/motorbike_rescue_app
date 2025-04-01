@@ -1,8 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:motorbike_rescue_app/core/configs/theme/app_theme.dart';
 
-class SignUpScreen extends StatelessWidget {
-  const SignUpScreen({super.key});
+class SignInScreen extends StatelessWidget {
+  const SignInScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +11,7 @@ class SignUpScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Đăng ký",
+          "Đăng nhập",
           style: TextStyle(
             fontSize: 40,
             fontWeight: FontWeight.bold,
@@ -22,14 +23,18 @@ class SignUpScreen extends StatelessWidget {
             fontSize: 18,
           ),
           TextSpan(
-            text: "Đã có tài khoản? ",
+            text: "Chưa có tài khoản ",
             children: [
               TextSpan(
-                text: 'Đăng nhập',
+                text: 'Đăng ký',
                 style: TextStyle(
                   color: AppTheme.textPos,
                   fontWeight: FontWeight.bold,
                 ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    Navigator.pushNamed(context, '/sign-up');
+                  },
               ),
             ],
           ),
@@ -39,22 +44,10 @@ class SignUpScreen extends StatelessWidget {
             hintText: "Email",
           ),
         ),
-        SizedBox(height: 15),
-        TextFormField(
-          decoration: InputDecoration(
-            hintText: "Số điện thoại",
-          ),
-        ),
-        SizedBox(height: 15),
+        SizedBox(height: 20),
         TextFormField(
           decoration: InputDecoration(
             hintText: "Mật khẩu",
-          ),
-        ),
-        SizedBox(height: 15),
-        TextFormField(
-          decoration: InputDecoration(
-            hintText: "Nhập lại mật khẩu",
           ),
         ),
         SizedBox(height: 30),
@@ -71,10 +64,15 @@ class SignUpScreen extends StatelessWidget {
             Expanded(
               child: Text('Nhớ mật khẩu'),
             ),
-            Text('Quên mật khẩu'),
+            GestureDetector(
+              child: Text('Quên mật khẩu'),
+              onTap: () {
+                Navigator.pushNamed(context, '/forget-password');
+              },
+            ),
           ],
         ),
-        SizedBox(height: 30),
+        SizedBox(height: 50),
         Align(
           alignment: Alignment.center,
           child: ElevatedButton(
@@ -82,13 +80,12 @@ class SignUpScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(
                 vertical: 15,
                 horizontal: 64,
-              ), // Add padding
-              backgroundColor:
-                  AppTheme.bgPos, // Ensure the background color is set
+              ),
+              backgroundColor: AppTheme.bgPos,
             ),
             onPressed: () {},
             child: Text(
-              'Đăng ký',
+              'Đăng nhập',
               style: TextStyle(fontSize: 20),
             ),
           ),

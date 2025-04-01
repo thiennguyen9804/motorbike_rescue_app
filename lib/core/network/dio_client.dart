@@ -8,11 +8,12 @@ class DioClient {
   DioClient()
       : _dio = Dio(
           BaseOptions(
-              headers: {'Content-Type': 'application/json; charset=UTF-8'},
-              responseType: ResponseType.json,
-              // connectTimeout: const Duration(seconds: 4),
-              sendTimeout: const Duration(seconds: 3),
-              receiveTimeout: const Duration(seconds: 3)),
+            // headers: {'Content-Type': 'application/json; charset=UTF-8'},
+            responseType: ResponseType.json,
+            // connectTimeout: const Duration(seconds: 4),
+            // sendTimeout: const Duration(seconds: 3),
+            // receiveTimeout: const Duration(seconds: 3),
+          ),
         )..interceptors.addAll([LoggerInterceptor()]);
 
   // GET METHOD

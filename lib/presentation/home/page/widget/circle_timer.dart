@@ -1,14 +1,17 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:motorbike_rescue_app/presentation/home/helper_object/timer_helper.dart';
 
 class CircleTimer extends StatefulWidget {
   final int duration;
   final VoidCallback onTimerComplete;
+  final TimerHelper timerInstance;
 
   const CircleTimer({
     super.key,
     required this.duration,
     required this.onTimerComplete,
+    required this.timerInstance,
   });
 
   @override
@@ -18,22 +21,22 @@ class CircleTimer extends StatefulWidget {
 class _CircleTimerState extends State<CircleTimer> {
   late Timer _timer;
   late int _remainingTime;
+  StreamSubscription<int>? _subscription;
 
   @override
   void initState() {
     super.initState();
     _remainingTime = widget.duration;
-    _startTimer();
+    // _startTimer();
+    _startListen();
   }
 
-  void _startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_remainingTime > 0) {
-        setState(() {
-          _remainingTime--;
-        });
-      } else {
-        _timer.cancel();
+  void _startListen() {
+    _subscription = widget.timerInstance.timerStream.listen((time) {
+      setState(() {
+        _remainingTime = time;
+      });
+      if (_remainingTime == 0) {
         widget.onTimerComplete();
       }
     });
@@ -81,7 +84,12 @@ class CircleTimerPainter extends CustomPainter {
     final sweepAngle = 2 * 3.141592653589793 * progress;
     final rect = Rect.fromCircle(center: center, radius: radius);
     canvas.drawArc(
-        rect, -3.141592653589793 / 2, sweepAngle, false, progressPaint);
+      rect,
+      -3.141592653589793 / 2,
+      sweepAngle,
+      false,
+      progressPaint,
+    );
   }
 
   @override

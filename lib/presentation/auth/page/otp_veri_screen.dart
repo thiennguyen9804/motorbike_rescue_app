@@ -1,9 +1,10 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:motorbike_rescue_app/core/configs/theme/app_theme.dart';
-import 'package:motorbike_rescue_app/presentation/auth/auth_wrapper.dart';
 
-class SignInScreen extends StatelessWidget {
-  const SignInScreen({super.key});
+class OtpVeriScreen extends StatelessWidget {
+  const OtpVeriScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,59 +12,50 @@ class SignInScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Đăng nhập",
+          "Nhập OTP",
           style: TextStyle(
             fontSize: 40,
             fontWeight: FontWeight.bold,
             color: AppTheme.textPos,
           ),
         ),
+        SizedBox(height: 10),
+        OtpTextField(
+          numberOfFields: 6,
+          focusedBorderColor: AppTheme.bgPos,
+          borderColor: AppTheme.bgPos,
+          //set to true to show as box or false to show as dash
+          showFieldAsBox: true,
+          //runs when a code is typed in
+          onCodeChanged: (String code) {
+            //handle validation or checks here
+          },
+          //runs when every textfield is filled
+          onSubmit: (String verificationCode) {}, // end onSubmit
+        ),
+        SizedBox(height: 20),
         Text.rich(
           style: TextStyle(
             fontSize: 18,
           ),
           TextSpan(
-            text: "Chưa có tài khoản ",
+            text: "Vẫn chưa nhận được OTP? ",
             children: [
               TextSpan(
-                text: 'Đăng ký',
+                text: 'Gửi lại',
                 style: TextStyle(
                   color: AppTheme.textPos,
                   fontWeight: FontWeight.bold,
                 ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    // resend OTP
+                  },
               ),
             ],
           ),
         ),
-        TextFormField(
-          decoration: InputDecoration(
-            hintText: "Email",
-          ),
-        ),
-        SizedBox(height: 20),
-        TextFormField(
-          decoration: InputDecoration(
-            hintText: "Mật khẩu",
-          ),
-        ),
-        SizedBox(height: 30),
-        Row(
-          children: [
-            SizedBox(
-              width: 24,
-              height: 24,
-              child: Checkbox(
-                value: false,
-                onChanged: (value) {},
-              ),
-            ),
-            Expanded(
-              child: Text('Nhớ mật khẩu'),
-            ),
-            Text('Quên mật khẩu'),
-          ],
-        ),
-        SizedBox(height: 30),
+        SizedBox(height: 60),
         Align(
           alignment: Alignment.center,
           child: ElevatedButton(
@@ -76,7 +68,7 @@ class SignInScreen extends StatelessWidget {
             ),
             onPressed: () {},
             child: Text(
-              'Đăng nhập',
+              'Xác nhận',
               style: TextStyle(fontSize: 20),
             ),
           ),

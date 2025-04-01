@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:motorbike_rescue_app/core/configs/theme/app_theme.dart';
 import 'package:motorbike_rescue_app/presentation/home/home_wrapper.dart';
+import 'package:motorbike_rescue_app/sl.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
@@ -12,6 +13,7 @@ void main() {
       systemNavigationBarColor: Colors.black,
     ),
   );
+  setUpServiceLocator();
   runApp(const MyApp());
 }
 

@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:motorbike_rescue_app/core/configs/theme/app_theme.dart';
-import 'package:motorbike_rescue_app/presentation/home/instance/timer_instance.dart';
+import 'package:motorbike_rescue_app/presentation/home/helper_object/timer_helper.dart';
 import 'package:motorbike_rescue_app/presentation/home/page/widget/circle_timer.dart';
 
 class SafeConfirmBottomSheet extends StatefulWidget {
   final int duration;
-  final TimerInstance timerInstance;
+  final TimerHelper timerInstance;
   final VoidCallback onSafe;
   final VoidCallback onDanger;
 
@@ -38,8 +38,8 @@ class _SafeConfirmBottomSheetState extends State<SafeConfirmBottomSheet> {
   }
 
   @override
-  void dispose() {
-    _timerSubscription.cancel();
+  void dispose() async {
+    await _timerSubscription.cancel();
     super.dispose();
   }
 
@@ -83,6 +83,7 @@ class _SafeConfirmBottomSheetState extends State<SafeConfirmBottomSheet> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircleTimer(
+                timerInstance: widget.timerInstance,
                 duration: widget.duration,
                 onTimerComplete: () {
                   // Add your action here when the timer completes
