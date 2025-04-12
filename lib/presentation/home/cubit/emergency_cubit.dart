@@ -61,16 +61,19 @@ class EmergencyCubit extends Cubit<EmergencyState> {
   }
 
   List<InstructionUi> parseInstructions(Map<String, dynamic> osrmData) {
-    final steps = osrmData['routes'][0]['legs'][0]['steps'];
-    return steps.map<InstructionUi>((step) {
-      final loc = step['maneuver']['location']; // [lng, lat]
-      final LatLng location = LatLng(loc[1], loc[0]); // đảo lại
+    final steps = osrmData['routes'][0]['legs'][0]['steps'] as List;
+
+    return List.generate(steps.length - 1, (index) {
+      final currentStep = steps[index];
+      final nextStep = steps[index + 1];
+      final nextLoc = nextStep['maneuver']['location']; // [lng, lat]
+      final LatLng destination = LatLng(nextLoc[1], nextLoc[0]);
 
       return InstructionUi(
-        distance: (step['distance'] as num).toDouble(),
-        text: getVietnameseInstruction(step),
-        position: location,
+        distance: (currentStep['distance'] as num).toDouble(),
+        text: getVietnameseInstruction(currentStep),
+        destination: destination,
       );
-    }).toList();
+    });
   }
 }

@@ -3,12 +3,12 @@ import 'package:latlong2/latlong.dart';
 class InstructionUi {
   final String text;
   final double distance;
-  final LatLng position;
+  final LatLng destination;
 
   InstructionUi({
     required this.text,
     required this.distance,
-    required this.position,
+    required this.destination,
   });
 
   InstructionUi copyWith({
@@ -19,12 +19,13 @@ class InstructionUi {
     return InstructionUi(
       text: text ?? this.text,
       distance: distance ?? this.distance,
-      position: position ?? this.position,
+      destination: position ?? this.destination,
     );
   }
 
   @override
   String toString() {
-    return 'InstructionUi(text: $text, distance: $distance, position: ${position.latitude}, ${position.longitude})';
+    return 'InstructionUi(text: $text, distance: $distance, position: ${destination.latitude}, ${destination.longitude})';
   }
 }
+

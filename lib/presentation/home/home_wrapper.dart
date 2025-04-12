@@ -87,6 +87,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
                       );
                     },
                     mockPath: [
+                      LatLng(10.885482, 106.782355),
                       LatLng(10.88527298706903, 106.78245245582151),
                       LatLng(10.884315580218399, 106.7832792493275),
                       LatLng(10.883083559557262, 106.78390498997832),

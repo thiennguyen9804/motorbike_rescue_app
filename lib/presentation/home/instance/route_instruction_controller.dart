@@ -27,26 +27,19 @@ class RouteInstructionController {
 
   @protected
   void handlePositionChange(Position position) {
-    if (_currentIndex >= _instructions.length - 1) return;
+    if (_currentIndex >= _instructions.length) return;
 
     final userLocation = LatLng(position.latitude, position.longitude);
-    final next = _instructions[_currentIndex + 1];
-    final instructionLocation = LatLng(
-      next.position.latitude,
-      next.position.longitude,
-    );
+    final current = _instructions[_currentIndex];
+    final instructionLocation = LatLng(current.destination.latitude, current.destination.longitude);
 
-    final distance = Distance().as(
-      LengthUnit.Meter,
-      userLocation,
-      instructionLocation,
-    );
+    final distance = Distance().as(LengthUnit.Meter, userLocation, instructionLocation);
 
-    // Cập nhật khoảng cách đến điểm tiếp theo
-    _instructions[_currentIndex + 1] = next.copyWith(distance: distance);
+    // Cập nhật UI
+    _instructions[_currentIndex] = current.copyWith(distance: distance);
     onUpdate([..._instructions]);
 
-    if (distance < 10) {
+    if (distance < 10 && _currentIndex < _instructions.length - 1) {
       _currentIndex++;
     }
   }
