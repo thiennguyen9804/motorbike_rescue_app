@@ -7,12 +7,13 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_polyline_algorithm/google_polyline_algorithm.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:motorbike_rescue_app/core/constant/network_constant.dart';
+import 'package:motorbike_rescue_app/core/localize.dart';
 import 'package:motorbike_rescue_app/core/mapper/lat_lng_x.dart';
 import 'package:motorbike_rescue_app/core/mapper/list_num_x.dart';
 import 'package:motorbike_rescue_app/core/mapper/position_x.dart';
 import 'package:motorbike_rescue_app/core/network/dio_client.dart';
+import 'package:motorbike_rescue_app/presentation/home/data/instruction_ui.dart';
 import 'package:motorbike_rescue_app/sl.dart';
-import 'dart:convert' show utf8, base64;
 
 part 'emergency_state.dart';
 
@@ -46,17 +47,10 @@ class EmergencyCubit extends Cubit<EmergencyState> {
       String geo = data['routes'][0]['geometry'];
       final temp = decodePolyline(geo);
       final points = temp.map((item) => item.toLatLng()).toList();
-      emit(RouteFetched(points));
+      final List<InstructionUi> instructions = parseInstructions(data);
+
+      emit(RouteFetched(points, instructions));
       print('points: $points');
-      final waypoints = data['waypoints'];
-      print('waypoints: $waypoints');
-      if (waypoints.isNotEmpty) {
-        for (var item in waypoints) {
-          final hint = item['hint'];
-          final instruction = base64Decode(hint);
-          print(instruction);
-        }
-      }
     } on DioException catch (e) {
       print('http error message: ${e.message}');
       print('status code ${e.response?.statusCode ?? 'unknown status code'}');
@@ -64,5 +58,19 @@ class EmergencyCubit extends Cubit<EmergencyState> {
     } catch (e) {
       print("Lỗi: $e");
     }
+  }
+
+  List<InstructionUi> parseInstructions(Map<String, dynamic> osrmData) {
+    final steps = osrmData['routes'][0]['legs'][0]['steps'];
+    return steps.map<InstructionUi>((step) {
+      final loc = step['maneuver']['location']; // [lng, lat]
+      final LatLng location = LatLng(loc[1], loc[0]); // đảo lại
+
+      return InstructionUi(
+        distance: (step['distance'] as num).toDouble(),
+        text: getVietnameseInstruction(step),
+        position: location,
+      );
+    }).toList();
   }
 }

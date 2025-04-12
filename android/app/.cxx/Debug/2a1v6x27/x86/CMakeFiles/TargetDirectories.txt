@@ -1,0 +1,2 @@
+/home/hayashing/SE122/motorbike_rescue_app/android/app/.cxx/Debug/2a1v6x27/x86/CMakeFiles/edit_cache.dir
+/home/hayashing/SE122/motorbike_rescue_app/android/app/.cxx/Debug/2a1v6x27/x86/CMakeFiles/rebuild_cache.dir

@@ -13,5 +13,7 @@ final class EmergencyHappened extends EmergencyState {
 
 final class RouteFetched extends EmergencyState {
   final List<LatLng> polylinePoints;
-  RouteFetched(this.polylinePoints);
+  final List<InstructionUi> instructions;
+
+  RouteFetched(this.polylinePoints, this.instructions);
 }

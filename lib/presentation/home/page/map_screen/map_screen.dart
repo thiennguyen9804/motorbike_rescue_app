@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -18,6 +20,7 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   final MapController _mapController = MapController(); // Điều khiển bản đồ
+  StreamSubscription<Position>? _positionStream;
 
   @override
   void initState() {
@@ -32,6 +35,12 @@ class _MapScreenState extends State<MapScreen> {
         builder: (context) => PickTimeScreen(),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _positionStream?.cancel();
+    super.dispose();
   }
 
   @override

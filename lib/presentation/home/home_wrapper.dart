@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:motorbike_rescue_app/core/configs/theme/app_theme.dart';
 import 'package:motorbike_rescue_app/presentation/home/cubit/emergency_cubit.dart';
+import 'package:motorbike_rescue_app/presentation/home/cubit/instruction_cubit.dart';
 import 'package:motorbike_rescue_app/presentation/home/cubit/user_emergency_cubit.dart';
 import 'package:motorbike_rescue_app/presentation/home/helper_object/timer_helper.dart';
+import 'package:motorbike_rescue_app/presentation/home/instance/mock/mock_route_instruction_controller.dart';
+import 'package:motorbike_rescue_app/presentation/home/instance/route_instruction_controller.dart';
 import 'package:motorbike_rescue_app/presentation/home/instance/user_emergency_instance.dart';
 import 'package:motorbike_rescue_app/presentation/home/page/device_screen.dart';
 import 'package:motorbike_rescue_app/presentation/home/instance/emergency_instance.dart';
@@ -43,22 +47,56 @@ class _HomeWrapperState extends State<HomeWrapper> {
               create: (context) => EmergencyCubit()..listenForEmergency(),
             ),
             BlocProvider<UserEmergencyCubit>(
-              create: (context) =>
-                  UserEmergencyCubit()..listenForUserEmergency(),
-            ),
+                create: (context) => UserEmergencyCubit()
+                // ..listenForUserEmergency(),
+                ),
+            
           ],
           child: BlocListener<EmergencyCubit, EmergencyState>(
             listener: (context, state) async {
               switch (state) {
                 case EmergencyHappened(:final emergencyPoint):
-                  // final g = emergencyPoint;
-                  // mapInstance.routingToEmergency(
-                  //   await mapInstance.myLocation(),
-                  //   g,
-                  // );
                   emergencyInstance.showEmergencyDialog(context);
-                  emergencyInstance.showFloatingNotification(context);
+                  // emergencyInstance.showFloatingNotification(context);
                   break;
+                case RouteFetched(:final polylinePoints, :final instructions):
+                  emergencyInstance.showFloatingNotification(
+                    context,
+                    instructions,
+                  );
+
+                  // final _routeInstructionController =
+                  //     RouteInstructionController(
+                  //   instructions: instructions,
+                  //   onUpdate: (updatedInstructions) {
+                  //     emergencyInstance.updateInstructions(
+                  //       updatedInstructions,
+                  //       0,
+
+                  //     );
+                  //   },
+                  // );
+
+                  final controller = MockRouteInstructionController(
+                    instructions: instructions,
+                    onUpdate: (updatedInstructions) {
+                      emergencyInstance.updateInstructions(
+                        context,
+                        instructions,
+                        0,
+                      );
+                    },
+                    mockPath: [
+                      LatLng(10.88527298706903, 106.78245245582151),
+                      LatLng(10.884315580218399, 106.7832792493275),
+                      LatLng(10.883083559557262, 106.78390498997832),
+                      LatLng(10.881802533744107, 106.78280277893913),
+                      LatLng(10.881403330205401, 106.78319886842198),
+                      // ...
+                    ],
+                    mockInterval: Duration(seconds: 1),
+                  );
+
                 default:
               }
             },
