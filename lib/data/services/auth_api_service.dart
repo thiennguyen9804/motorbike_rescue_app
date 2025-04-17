@@ -15,17 +15,19 @@ class AuthApiServiceImpl implements AuthApiService {
   @override
   Future<Either<String, LogInRes>> logIn(AuthEmailLoginDto dto) async {
     try {
-      final res = await sl<DioClient>().post(NetworkConstant.SIGN_IN, data: dto.toJson());
-      return Right(LogInRes());
-    } on DioException catch(e) {
+      final res = await sl<DioClient>()
+          .post(NetworkConstant.SIGN_IN, data: dto.toJson());
+      final loginRes = LogInRes.fromJson(res.data);
+      return Right(loginRes);
+    } on DioException catch (e) {
       final data = e.response?.data;
-      if(data is Map<String, dynamic>) {
+      if (data is Map<String, dynamic>) {
         final errors = data['errors'];
         final email = errors['email'];
         final password = errors['password'];
-        if(email != null && email == 'notFound') {
+        if (email != null && email == 'notFound') {
           return Left('Tài khoản không tồn tại');
-        } else if(password != null && password == 'incorrectPassword') {
+        } else if (password != null && password == 'incorrectPassword') {
           return Left('Sai mật khẩu');
         }
       }
@@ -37,5 +39,4 @@ class AuthApiServiceImpl implements AuthApiService {
 
     return Left("Đã có lỗi xảy ra");
   }
-
 }

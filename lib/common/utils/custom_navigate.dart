@@ -5,7 +5,8 @@ void customNavigate(BuildContext context, Widget screenX) {
   bool screenXExists = false;
 
   Navigator.popUntil(context, (route) {
-    if (route is MaterialPageRoute && route.builder(context).runtimeType == screenX.runtimeType) {
+    if (route is MaterialPageRoute &&
+        route.builder(context).runtimeType == screenX.runtimeType) {
       screenXExists = true;
       return true; // Dừng pop khi thấy màn hình X
     }

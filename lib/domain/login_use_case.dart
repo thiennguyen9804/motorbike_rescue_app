@@ -5,9 +5,8 @@ import 'package:motorbike_rescue_app/data/dto/log_in_res.dart';
 import 'package:motorbike_rescue_app/data/repository/auth_repository.dart';
 import 'package:motorbike_rescue_app/sl.dart';
 
-class LoginUseCase implements UseCase<Either<String, LogInRes>, AuthEmailLoginDto> {
-  final loginRes = LogInRes();
-
+class LoginUseCase
+    implements UseCase<Either<String, LogInRes>, AuthEmailLoginDto> {
   @override
   Future<Either<String, LogInRes>> call({AuthEmailLoginDto? param}) async {
     final res = await sl<AuthRepository>().logIn(param!);

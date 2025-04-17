@@ -8,10 +8,7 @@ part 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
 
-  Future execute(
-    dynamic params,
-    UseCase usecase
-  ) async {
+  Future execute(dynamic params, UseCase usecase) async {
     emit(AuthLoading());
     final res = await usecase.call(param: params);
     res.fold(

@@ -39,15 +39,14 @@ class AuthEmailLoginDto {
 
   String toJson() => json.encode(toMap());
 
-  factory AuthEmailLoginDto.fromJson(String source) => AuthEmailLoginDto.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory AuthEmailLoginDto.fromJson(String source) =>
+      AuthEmailLoginDto.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   bool operator ==(covariant AuthEmailLoginDto other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.email == email &&
-      other.password == password;
+
+    return other.email == email && other.password == password;
   }
 
   @override

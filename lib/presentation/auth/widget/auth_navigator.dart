@@ -24,7 +24,7 @@ class _AuthNavigatorState extends State<AuthNavigator> {
   void _updateHeight(String route) {
     switch (route) {
       case '/sign-in':
-        widget.containerHeightNotifier.value = 0.6; 
+        widget.containerHeightNotifier.value = 0.6;
         break;
       case '/sign-up':
         widget.containerHeightNotifier.value = 0.7;

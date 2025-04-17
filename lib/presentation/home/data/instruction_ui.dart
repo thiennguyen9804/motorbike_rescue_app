@@ -28,4 +28,3 @@ class InstructionUi {
     return 'InstructionUi(text: $text, distance: $distance, position: ${destination.latitude}, ${destination.longitude})';
   }
 }
-

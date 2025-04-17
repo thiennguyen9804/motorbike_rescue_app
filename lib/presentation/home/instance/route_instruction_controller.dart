@@ -31,9 +31,11 @@ class RouteInstructionController {
 
     final userLocation = LatLng(position.latitude, position.longitude);
     final current = _instructions[_currentIndex];
-    final instructionLocation = LatLng(current.destination.latitude, current.destination.longitude);
+    final instructionLocation =
+        LatLng(current.destination.latitude, current.destination.longitude);
 
-    final distance = Distance().as(LengthUnit.Meter, userLocation, instructionLocation);
+    final distance =
+        Distance().as(LengthUnit.Meter, userLocation, instructionLocation);
 
     // Cập nhật UI
     _instructions[_currentIndex] = current.copyWith(distance: distance);
