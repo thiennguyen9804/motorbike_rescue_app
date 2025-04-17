@@ -6,4 +6,5 @@ class NetworkConstant {
   static const SIGN_IN = '${BASE_URL}auth/email/login';
   static String routingUrl(String polylines) =>
       'https://router.project-osrm.org/route/v1/driving/polyline($polylines)?steps=true';
+  static const TOKENS = '${BASE_URL}auth/refresh';
 }

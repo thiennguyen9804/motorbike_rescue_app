@@ -42,7 +42,9 @@ class MyApp extends StatelessWidget {
         const Locale('vi', ''),
       ],
       home: BlocProvider(
-          create: (context) => InstructionCubit(), child: MainRouter()),
+        create: (context) => InstructionCubit(),
+        child: MainRouter(),
+      ),
     );
   }
 }

@@ -1,0 +1,1 @@
+class NoTokensExceptions implements Exception {}

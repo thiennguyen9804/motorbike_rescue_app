@@ -1,0 +1,1 @@
+/home/hayashing/SE122/motorbike_rescue_app/build/app/intermediates/cxx/Debug/1w2i386b/obj/armeabi-v7a

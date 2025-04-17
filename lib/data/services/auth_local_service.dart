@@ -4,6 +4,7 @@ import 'package:mmkv/mmkv.dart';
 import 'package:motorbike_rescue_app/data/dto/local_user.dart';
 import 'package:motorbike_rescue_app/data/dto/log_in_res.dart';
 import 'package:motorbike_rescue_app/data/dto/tokens.dart';
+import 'package:motorbike_rescue_app/exception/no_tokens_exceptions.dart';
 
 abstract class AuthLocalService {
   void writeTokens(Tokens tokens);
@@ -25,7 +26,10 @@ class AuthLocalServiceImpl implements AuthLocalService {
   @override
   Tokens getTokens() {
     final str = mmkv.decodeString('tokens');
-    return Tokens.fromJson(jsonDecode(str!));
+    if(str == null) {
+      throw NoTokensExceptions();
+    }
+    return Tokens.fromJson(jsonDecode(str));
   }
 
   @override

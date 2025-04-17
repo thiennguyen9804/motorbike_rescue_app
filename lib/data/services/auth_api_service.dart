@@ -5,10 +5,12 @@ import 'package:motorbike_rescue_app/core/constant/network_constant.dart';
 import 'package:motorbike_rescue_app/core/network/dio_client.dart';
 import 'package:motorbike_rescue_app/data/dto/auth_email_login_dto.dart';
 import 'package:motorbike_rescue_app/data/dto/log_in_res.dart';
+import 'package:motorbike_rescue_app/data/dto/tokens.dart';
 import 'package:motorbike_rescue_app/sl.dart';
 
 abstract class AuthApiService {
   Future<Either<String, LogInRes>> logIn(AuthEmailLoginDto dto);
+  Future<Tokens> getNewTokens(Tokens tokens);
 }
 
 class AuthApiServiceImpl implements AuthApiService {
@@ -38,5 +40,13 @@ class AuthApiServiceImpl implements AuthApiService {
     }
 
     return Left("Đã có lỗi xảy ra");
+  }
+
+  @override
+  Future<Tokens> getNewTokens(Tokens tokens) async {
+    final res = await sl<DioClient>()
+        .post(NetworkConstant.TOKENS, data: tokens.toJson());
+    final newTokens = Tokens.fromJson(res.data);
+    return newTokens;
   }
 }
