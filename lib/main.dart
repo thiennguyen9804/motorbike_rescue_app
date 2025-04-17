@@ -6,6 +6,7 @@ import 'package:motorbike_rescue_app/core/configs/theme/app_theme.dart';
 import 'package:motorbike_rescue_app/presentation/auth/auth_wrapper.dart';
 import 'package:motorbike_rescue_app/presentation/home/cubit/instruction_cubit.dart';
 import 'package:motorbike_rescue_app/presentation/home/home_wrapper.dart';
+import 'package:motorbike_rescue_app/presentation/main/main_router.dart';
 import 'package:motorbike_rescue_app/sl.dart';
 
 void main() {
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
       ],
       home: BlocProvider(
         create: (context) => InstructionCubit(),
-        child: HomeWrapper(),
+        child: MainRouter()
       ),
     );
   }

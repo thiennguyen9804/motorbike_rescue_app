@@ -13,7 +13,7 @@ class AuthCubit extends Cubit<AuthState> {
     UseCase usecase
   ) async {
     emit(AuthLoading());
-    final res = await usecase.call();
+    final res = await usecase.call(param: params);
     res.fold(
       (message) => emit(AuthFailed(message: message)),
       (data) => emit(AuthSuccess()),

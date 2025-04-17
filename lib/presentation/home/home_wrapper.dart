@@ -12,14 +12,18 @@ import 'package:motorbike_rescue_app/presentation/home/instance/user_emergency_i
 import 'package:motorbike_rescue_app/presentation/home/page/device_screen.dart';
 import 'package:motorbike_rescue_app/presentation/home/instance/emergency_instance.dart';
 import 'package:motorbike_rescue_app/presentation/home/page/map_screen/map_screen.dart';
-
-final screens = [
-  MapScreen(),
-  const DeviceScreen(),
-];
+import 'package:motorbike_rescue_app/presentation/home/page/user_screen/user_screen.dart';
 
 class HomeWrapper extends StatefulWidget {
-  const HomeWrapper({super.key});
+  HomeWrapper({super.key, required this.onLogout}) {
+    screens = [
+      MapScreen(),
+      const DeviceScreen(),
+      UserScreen(onLogout: onLogout)
+    ];
+  }
+  final VoidCallback onLogout;
+  late List<Widget> screens;
 
   @override
   State<HomeWrapper> createState() => _HomeWrapperState();
@@ -28,8 +32,6 @@ class HomeWrapper extends StatefulWidget {
 class _HomeWrapperState extends State<HomeWrapper> {
   int _selectedIndex = 0;
   final emergencyInstance = EmergencyInstance();
-  // final mapInstance = MapInstance();
-  // final mapController = MapInstance().mapController;
   final userEmgInstance = UserEmergencyInstance();
 
   void _onItemTapped(int index) {
@@ -50,7 +52,6 @@ class _HomeWrapperState extends State<HomeWrapper> {
                 create: (context) => UserEmergencyCubit()
                 // ..listenForUserEmergency(),
                 ),
-            
           ],
           child: BlocListener<EmergencyCubit, EmergencyState>(
             listener: (context, state) async {
@@ -135,6 +136,12 @@ class _HomeWrapperState extends State<HomeWrapper> {
                 _selectedIndex == 1 ? Icons.comment : Icons.comment_outlined),
             label: 'Thiết bị',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(_selectedIndex == 1
+                ? Icons.account_circle
+                : Icons.account_circle_outlined),
+            label: 'User',
+          ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: AppTheme.textPos,
@@ -142,7 +149,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
       ),
       body: listenerWidget(
         context,
-        screens[_selectedIndex],
+        widget.screens[_selectedIndex],
       ),
     );
   }

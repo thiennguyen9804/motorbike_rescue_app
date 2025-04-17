@@ -6,8 +6,13 @@ import 'package:motorbike_rescue_app/presentation/auth/page/sign_up_screen.dart'
 
 class AuthNavigator extends StatefulWidget {
   final ValueNotifier<double> containerHeightNotifier;
+  final VoidCallback onLoginSuccess;
 
-  const AuthNavigator({super.key, required this.containerHeightNotifier});
+  const AuthNavigator({
+    super.key,
+    required this.containerHeightNotifier,
+    required this.onLoginSuccess,
+  });
 
   @override
   State<AuthNavigator> createState() => _AuthNavigatorState();
@@ -19,7 +24,7 @@ class _AuthNavigatorState extends State<AuthNavigator> {
   void _updateHeight(String route) {
     switch (route) {
       case '/sign-in':
-        widget.containerHeightNotifier.value = 0.6;
+        widget.containerHeightNotifier.value = 0.6; 
         break;
       case '/sign-up':
         widget.containerHeightNotifier.value = 0.7;
@@ -44,7 +49,11 @@ class _AuthNavigatorState extends State<AuthNavigator> {
         _updateHeight(settings.name!);
         switch (settings.name) {
           case '/sign-in':
-            return MaterialPageRoute(builder: (_) => SignInScreen());
+            return MaterialPageRoute(
+              builder: (_) => SignInScreen(
+                onLoginSuccess: widget.onLoginSuccess,
+              ),
+            );
           case '/sign-up':
             return MaterialPageRoute(builder: (_) => SignUpScreen());
           case '/forget-password':
@@ -52,7 +61,11 @@ class _AuthNavigatorState extends State<AuthNavigator> {
           case '/otp-veri':
             return MaterialPageRoute(builder: (_) => OtpVeriScreen());
           default:
-            return MaterialPageRoute(builder: (_) => SignInScreen());
+            return MaterialPageRoute(
+              builder: (_) => SignInScreen(
+                onLoginSuccess: widget.onLoginSuccess,
+              ),
+            );
         }
       },
     );

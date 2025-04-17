@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:motorbike_rescue_app/presentation/auth/widget/auth_navigator.dart';
 
 class AuthWrapper extends StatefulWidget {
-  const AuthWrapper({super.key});
+  const AuthWrapper({super.key, required this.onLoginSuccess});
+  final VoidCallback onLoginSuccess;
 
   @override
   State<AuthWrapper> createState() => _AuthWrapperState();
@@ -81,6 +82,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
                       curve: Curves.linear,
                       child: AuthNavigator(
                         containerHeightNotifier: _containerHeightNotifier,
+                        onLoginSuccess: widget.onLoginSuccess,
                       ),
                     );
                   },

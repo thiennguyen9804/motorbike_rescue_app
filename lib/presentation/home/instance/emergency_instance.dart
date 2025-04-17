@@ -61,4 +61,12 @@ class EmergencyInstance {
 
     overlay.insert(_overlayEntry!);
   }
+
+  void removeOverlay() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+    if (kDebugMode) {
+      print("Overlay removed");
+    }
+  }
 }
