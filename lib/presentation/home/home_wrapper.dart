@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:motorbike_rescue_app/core/configs/theme/app_theme.dart';
+import 'package:motorbike_rescue_app/core/mapper/position_x.dart';
 import 'package:motorbike_rescue_app/presentation/home/cubit/emergency_cubit.dart';
 import 'package:motorbike_rescue_app/presentation/home/cubit/instruction_cubit.dart';
 import 'package:motorbike_rescue_app/presentation/home/cubit/user_emergency_cubit.dart';
 import 'package:motorbike_rescue_app/presentation/home/helper_object/timer_helper.dart';
+import 'package:motorbike_rescue_app/presentation/home/instance/mock/mock_emergency_cubit.dart';
 import 'package:motorbike_rescue_app/presentation/home/instance/mock/mock_route_instruction_controller.dart';
 import 'package:motorbike_rescue_app/presentation/home/instance/route_instruction_controller.dart';
 import 'package:motorbike_rescue_app/presentation/home/instance/user_emergency_instance.dart';
@@ -33,11 +36,18 @@ class _HomeWrapperState extends State<HomeWrapper> {
   int _selectedIndex = 0;
   final emergencyInstance = EmergencyInstance();
   final userEmgInstance = UserEmergencyInstance();
+  RouteInstructionController? _routeController;
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void dispose() {
+    _routeController?.dispose();
+    super.dispose();
   }
 
   Widget listenerWidget(BuildContext context, Widget child) {
@@ -46,7 +56,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
         return MultiBlocProvider(
           providers: [
             BlocProvider<EmergencyCubit>(
-              create: (context) => EmergencyCubit()..listenForEmergency(),
+              create: (context) => MockEmergencyCubit()..listenForEmergency(),
             ),
             BlocProvider<UserEmergencyCubit>(
                 create: (context) => UserEmergencyCubit()
@@ -77,26 +87,27 @@ class _HomeWrapperState extends State<HomeWrapper> {
                   //     );
                   //   },
                   // );
-
-                  final controller = MockRouteInstructionController(
+                  _routeController?.dispose();
+                  _routeController = MockRouteInstructionController(
                     instructions: instructions,
-                    onUpdate: (updatedInstructions) {
-                      emergencyInstance.updateInstructions(
+                    onUpdate: (updatedInstructions, currentIndex) {
+                      emergencyInstance.updateInstruction(
                         context,
-                        instructions,
-                        0,
+                        updatedInstructions[currentIndex]
                       );
+
+                      print('MockRouteInstructionController ${instructions[currentIndex]}');
+                      print(currentIndex);
                     },
+                    
                     mockPath: [
-                      LatLng(10.885482, 106.782355),
-                      LatLng(10.88527298706903, 106.78245245582151),
-                      LatLng(10.884315580218399, 106.7832792493275),
-                      LatLng(10.883083559557262, 106.78390498997832),
-                      LatLng(10.881802533744107, 106.78280277893913),
-                      LatLng(10.881403330205401, 106.78319886842198),
+                      LatLng(10.8769684, 106.8093181), // điểm khởi đầu
+                      LatLng(10.877553741121432, 106.80867429350808), // gần hết mốc đầu tiên
+                      LatLng(10.877589958852385, 106.80861997877935), // qua mốc thứ hai
+                      LatLng(10.877631444611527, 106.80864143644995), // trên mốc thứ hai tới mốc thứ 3
                       // ...
                     ],
-                    mockInterval: Duration(seconds: 1),
+                    mockInterval: Duration(seconds: 3),
                   );
 
                 default:

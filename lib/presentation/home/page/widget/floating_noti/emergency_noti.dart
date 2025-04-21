@@ -15,14 +15,14 @@ class EmergencyNoti extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<InstructionCubit, List<InstructionUi>>(
+    return BlocBuilder<InstructionCubit, InstructionUi?>(
       builder: (context, instructions) {
         Widget content;
 
-        if (instructions.isEmpty) {
+        if (instructions == null) {
           content = const Text("Đang tải chỉ dẫn...");
         } else {
-          final instruction = instructions[0]; // Lấy chỉ dẫn đầu tiên
+          final instruction = instructions; // Lấy chỉ dẫn đầu tiên
           content = Row(
             children: [
               Icon(

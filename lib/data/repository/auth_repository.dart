@@ -14,6 +14,7 @@ abstract class AuthRepository {
   Future<Either<String, LogInRes>> logIn(AuthEmailLoginDto login);
   Future<void> refreshTokens(Tokens refreshTokens);
   Tokens getTokens();
+  Future<String?> register();
 }
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -46,5 +47,10 @@ class AuthRepositoryImpl implements AuthRepository {
     } on NoTokensExceptions catch (e) {
       rethrow;
     }
+  }
+  
+  @override
+  Future<String?> register() async {
+    
   }
 }

@@ -27,7 +27,7 @@ class _AuthNavigatorState extends State<AuthNavigator> {
         widget.containerHeightNotifier.value = 0.6;
         break;
       case '/sign-up':
-        widget.containerHeightNotifier.value = 0.7;
+        widget.containerHeightNotifier.value = 0.73;
         break;
       case '/forget-password':
         widget.containerHeightNotifier.value = 0.5;

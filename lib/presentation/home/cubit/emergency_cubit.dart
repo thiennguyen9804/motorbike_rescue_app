@@ -27,13 +27,20 @@ class EmergencyCubit extends Cubit<EmergencyState> {
     await fetchRoute(destination);
   }
 
+  @protected
+  Future<Position> getCurrentPosition() async  => await Geolocator.getCurrentPosition();
+
+
   Future<void> fetchRoute(LatLng destination) async {
-    final my = await Geolocator.getCurrentPosition();
+    final my = await getCurrentPosition();
+    // final my = LatLng()
     if (kDebugMode) {
       print('📍 My location: (${my.latitude}, ${my.longitude})');
     }
 
     final LatLng startLocation = my.toLatLng();
+    // final LatLng startLocation = LatLng(10.8769684, 106.8093181);
+
     final polylines = encodePolyline([
       startLocation.toArr(),
       destination.toArr(),
@@ -61,17 +68,21 @@ class EmergencyCubit extends Cubit<EmergencyState> {
   List<InstructionUi> parseInstructions(Map<String, dynamic> osrmData) {
     final steps = osrmData['routes'][0]['legs'][0]['steps'] as List;
 
-    return List.generate(steps.length - 1, (index) {
+
+    final res = List.generate(steps.length, (index) {
       final currentStep = steps[index];
-      final nextStep = steps[index + 1];
+      final nextStep = steps[index];
       final nextLoc = nextStep['maneuver']['location']; // [lng, lat]
       final LatLng destination = LatLng(nextLoc[1], nextLoc[0]);
 
-      return InstructionUi(
+      final res = InstructionUi(
         distance: (currentStep['distance'] as num).toDouble(),
         text: getVietnameseInstruction(currentStep),
         destination: destination,
       );
+      return res;
     });
+    print('Emeregency Cubit parseInstructions $res');
+    return res;
   }
 }

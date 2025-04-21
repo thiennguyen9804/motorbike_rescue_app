@@ -6,7 +6,9 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:motorbike_rescue_app/core/configs/theme/app_theme.dart';
 import 'package:motorbike_rescue_app/presentation/home/cubit/emergency_cubit.dart';
+import 'package:motorbike_rescue_app/presentation/home/instance/mock/mock_emergency_cubit.dart';
 import 'package:motorbike_rescue_app/presentation/home/page/pick_time_screen.dart';
 
 import 'tile_providers.dart';
@@ -84,7 +86,7 @@ class _MapScreenState extends State<MapScreen> {
                         polylines: [
                           Polyline(
                             points: polylinePoints,
-                            color: const Color.fromARGB(255, 0, 140, 255),
+                            color: AppTheme.bgDanger,
                             strokeWidth: 2,
                           ),
                         ],

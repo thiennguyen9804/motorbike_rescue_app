@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as context;
-import 'package:motorbike_rescue_app/core/configs/theme/app_theme.dart';
 import 'package:motorbike_rescue_app/presentation/home/cubit/instruction_cubit.dart';
 import 'package:motorbike_rescue_app/presentation/home/data/instruction_ui.dart';
 import 'package:motorbike_rescue_app/presentation/home/page/widget/emergency_dialog.dart';
@@ -18,13 +16,12 @@ class EmergencyInstance {
     return _instance;
   }
 
-  void updateInstructions(
+  void updateInstruction(
     BuildContext context,
-    List<InstructionUi> newInstructions,
-    int newIndex,
+    InstructionUi newInstruction
   ) {
-    print('newsInstruction: ${newInstructions[newIndex]}');
-    context.read<InstructionCubit>().updateInstructions(newInstructions);
+    // print('newsInstruction: ${newInstructions[newIndex]}');
+    context.read<InstructionCubit>().updateInstruction(newInstruction);
   }
 
   // Method to show the emergency dialog

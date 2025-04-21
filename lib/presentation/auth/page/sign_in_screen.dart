@@ -50,142 +50,144 @@ class _SignInScreenState extends State<SignInScreen> {
                 break;
             }
           },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Đăng nhập",
-                style: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                  color: AppTheme.textPos,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Đăng nhập",
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.textPos,
+                  ),
                 ),
-              ),
-              Text.rich(
-                style: TextStyle(
-                  fontSize: 18,
-                ),
-                TextSpan(
-                  text: "Chưa có tài khoản ",
-                  children: [
-                    TextSpan(
-                      text: 'Đăng ký',
-                      style: TextStyle(
-                        color: AppTheme.textPos,
-                        fontWeight: FontWeight.bold,
+                Text.rich(
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                  TextSpan(
+                    text: "Chưa có tài khoản ",
+                    children: [
+                      TextSpan(
+                        text: 'Đăng ký',
+                        style: TextStyle(
+                          color: AppTheme.textPos,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.pushNamed(context, '/sign-up');
+                          },
                       ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          Navigator.pushNamed(context, '/sign-up');
-                        },
+                    ],
+                  ),
+                ),
+                TextFormField(
+                  decoration: InputDecoration(
+                    hintText: "Email",
+                  ),
+                  controller: emailCtrl,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Vui lòng nhập email';
+                    }
+                    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                      return 'Email không hợp lệ';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 20),
+                TextFormField(
+                  decoration: InputDecoration(
+                    hintText: "Mật khẩu",
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        obscurePassword ? Icons.visibility_off : Icons.visibility,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          obscurePassword = !obscurePassword;
+                        });
+                      },
+                    ),
+                  ),
+                  controller: passwordCtrl,
+                  obscureText: obscurePassword,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Vui lòng nhập mật khẩu';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 30),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: Checkbox(
+                        value: false,
+                        onChanged: (value) {},
+                      ),
+                    ),
+                    Expanded(
+                      child: Text('Nhớ mật khẩu'),
+                    ),
+                    GestureDetector(
+                      child: Text('Quên mật khẩu'),
+                      onTap: () {
+                        // Navigator.pushNamed(context, '/forget-password');
+                      },
                     ),
                   ],
                 ),
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Email",
-                ),
-                controller: emailCtrl,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Vui lòng nhập email';
-                  }
-                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                    return 'Email không hợp lệ';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Mật khẩu",
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      obscurePassword ? Icons.visibility_off : Icons.visibility,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        obscurePassword = !obscurePassword;
-                      });
-                    },
-                  ),
-                ),
-                controller: passwordCtrl,
-                obscureText: obscurePassword,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Vui lòng nhập mật khẩu';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 30),
-              Row(
-                children: [
-                  SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: Checkbox(
-                      value: false,
-                      onChanged: (value) {},
-                    ),
-                  ),
-                  Expanded(
-                    child: Text('Nhớ mật khẩu'),
-                  ),
-                  GestureDetector(
-                    child: Text('Quên mật khẩu'),
-                    onTap: () {
-                      // Navigator.pushNamed(context, '/forget-password');
-                    },
-                  ),
-                ],
-              ),
-              SizedBox(height: 50),
-              Align(
-                alignment: Alignment.center,
-                child: BlocBuilder<AuthCubit, AuthState>(
-                  builder: (context, state) {
-                    final isLoading = state is AuthLoading;
-                    return ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 15,
-                          horizontal: 64,
+                SizedBox(height: 50),
+                Align(
+                  alignment: Alignment.center,
+                  child: BlocBuilder<AuthCubit, AuthState>(
+                    builder: (context, state) {
+                      final isLoading = state is AuthLoading;
+                      return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 15,
+                            horizontal: 64,
+                          ),
+                          backgroundColor: AppTheme.bgPos,
                         ),
-                        backgroundColor: AppTheme.bgPos,
-                      ),
-                      onPressed: () {
-                        if (isLoading) {
-                          return;
-                        }
-
-                        if (!formKey.currentState!.validate()) {
-                          return;
-                        }
-                        final params = AuthEmailLoginDto(
-                          email: emailCtrl.text,
-                          password: passwordCtrl.text,
-                        );
-
-                        context.read<AuthCubit>().execute(
-                              params,
-                              sl<LoginUseCase>(),
-                            );
-                      },
-                      child: !isLoading
-                          ? Text(
-                              'Đăng nhập',
-                              style: TextStyle(fontSize: 20),
-                            )
-                          : LoadingIndicator(),
-                    );
-                  },
+                        onPressed: () {
+                          if (isLoading) {
+                            return;
+                          }
+            
+                          if (!formKey.currentState!.validate()) {
+                            return;
+                          }
+                          final params = AuthEmailLoginDto(
+                            email: emailCtrl.text,
+                            password: passwordCtrl.text,
+                          );
+            
+                          context.read<AuthCubit>().execute(
+                                params,
+                                sl<LoginUseCase>(),
+                              );
+                        },
+                        child: !isLoading
+                            ? Text(
+                                'Đăng nhập',
+                                style: TextStyle(fontSize: 20),
+                              )
+                            : LoadingIndicator(),
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
