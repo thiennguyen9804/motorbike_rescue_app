@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:motorbike_rescue_app/core/constant/app_constant.dart';
 import 'package:motorbike_rescue_app/presentation/home/page/widget/bottom_sheet/is_danger_bottom_sheet.dart';
 import 'package:motorbike_rescue_app/presentation/home/page/widget/bottom_sheet/is_safe_bottom_sheet.dart';
 import 'package:motorbike_rescue_app/presentation/home/page/widget/bottom_sheet/safe_confirm_bottom_sheet.dart';
@@ -12,6 +13,8 @@ class UserEmergencyInstance {
   static final UserEmergencyInstance _instance =
       UserEmergencyInstance._privateConstructor();
 
+  late VoidCallback onDanger;
+
   factory UserEmergencyInstance() {
     return _instance;
   }
@@ -21,7 +24,8 @@ class UserEmergencyInstance {
   }
 
   void startTimer() {
-    _timerInstance!.startTimer(30);
+    _timerInstance!.startTimer(AppConstant.TIME_TO_CALL_FOR_HELP);
+    // _timerInstance!.resetTimer(AppConstant.TIME_TO_CALL_FOR_HELP);
   }
 
   void removeTimer() {
@@ -50,6 +54,7 @@ class UserEmergencyInstance {
             // Navigator.of(context).pop('danger');
             showIsDangerBtmSheet(context);
             _timerInstance!.stopTimer();
+            onDanger();
           },
         );
       },

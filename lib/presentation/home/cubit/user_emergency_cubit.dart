@@ -7,8 +7,8 @@ class UserEmergencyCubit extends Cubit<UserEmergencyState> {
   UserEmergencyCubit() : super(UserEmergencyInitial());
 
   listenForUserEmergency() async {
-    // Future.delayed(const Duration(seconds: 5), () {
-    //   emit(UserEmergencyConfirm());
-    // });
+    Future.delayed(const Duration(seconds: 5), () {
+      emit(UserEmergencyConfirm());
+    });
   }
 }

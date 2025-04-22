@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:motorbike_rescue_app/core/configs/theme/app_theme.dart';
+import 'package:motorbike_rescue_app/core/constant/app_constant.dart';
 import 'package:motorbike_rescue_app/core/mapper/position_x.dart';
+import 'package:motorbike_rescue_app/presentation/home/command/user_is_emergency_command.dart';
 import 'package:motorbike_rescue_app/presentation/home/cubit/emergency_cubit.dart';
 import 'package:motorbike_rescue_app/presentation/home/cubit/instruction_cubit.dart';
 import 'package:motorbike_rescue_app/presentation/home/cubit/user_emergency_cubit.dart';
@@ -35,7 +37,15 @@ class HomeWrapper extends StatefulWidget {
 class _HomeWrapperState extends State<HomeWrapper> {
   int _selectedIndex = 0;
   final emergencyInstance = EmergencyInstance();
-  final userEmgInstance = UserEmergencyInstance();
+  // final timerHelper = TimerHelper()
+  //   ..onTimerDone = () {
+  //     UserIsEmergencyCommand().execute();
+  //   };
+  final userEmgInstance = UserEmergencyInstance()
+    ..onDanger = () {
+      UserIsEmergencyCommand().execute();
+    };
+
   RouteInstructionController? _routeController;
 
   void _onItemTapped(int index) {
@@ -55,13 +65,13 @@ class _HomeWrapperState extends State<HomeWrapper> {
       builder: (context) {
         return MultiBlocProvider(
           providers: [
-            BlocProvider<EmergencyCubit>(
-              create: (context) => MockEmergencyCubit()..listenForEmergency(),
-            ),
-            BlocProvider<UserEmergencyCubit>(
-                create: (context) => UserEmergencyCubit()
-                // ..listenForUserEmergency(),
+            BlocProvider<EmergencyCubit>(create: (context) => EmergencyCubit()
+                // ..listenForEmergency(),
                 ),
+            BlocProvider<UserEmergencyCubit>(
+              create: (context) =>
+                  UserEmergencyCubit()..listenForUserEmergency(),
+            ),
           ],
           child: BlocListener<EmergencyCubit, EmergencyState>(
             listener: (context, state) async {
@@ -88,26 +98,39 @@ class _HomeWrapperState extends State<HomeWrapper> {
                   //   },
                   // );
                   _routeController?.dispose();
-                  _routeController = MockRouteInstructionController(
-                    instructions: instructions,
+                  // _routeController = MockRouteInstructionController(
+                  //   instructions: instructions,
+                  //   onUpdate: (updatedInstructions, currentIndex) {
+                  //     emergencyInstance.updateInstruction(
+                  //       context,
+                  //       updatedInstructions[currentIndex]
+                  //     );
+
+                  //     print('MockRouteInstructionController ${instructions[currentIndex]}');
+                  //     print(currentIndex);
+                  //   },
+
+                  //   mockPath: [
+                  //     LatLng(10.8769684, 106.8093181), // điểm khởi đầu
+                  //     LatLng(10.877553741121432, 106.80867429350808), // gần hết mốc đầu tiên
+                  //     LatLng(10.877589958852385, 106.80861997877935), // qua mốc thứ hai
+                  //     LatLng(10.877631444611527, 106.80864143644995), // trên mốc thứ hai tới mốc thứ 3
+                  //     // ...
+                  //   ],
+                  //   mockInterval: Duration(seconds: 3),
+                  // );
+
+                  _routeController = RouteInstructionController(
+                    instructions: state.instructions,
                     onUpdate: (updatedInstructions, currentIndex) {
                       emergencyInstance.updateInstruction(
                         context,
-                        updatedInstructions[currentIndex]
+                        updatedInstructions[currentIndex],
                       );
-
-                      print('MockRouteInstructionController ${instructions[currentIndex]}');
+                      print(
+                          'MockRouteInstructionController ${instructions[currentIndex]}');
                       print(currentIndex);
                     },
-                    
-                    mockPath: [
-                      LatLng(10.8769684, 106.8093181), // điểm khởi đầu
-                      LatLng(10.877553741121432, 106.80867429350808), // gần hết mốc đầu tiên
-                      LatLng(10.877589958852385, 106.80861997877935), // qua mốc thứ hai
-                      LatLng(10.877631444611527, 106.80864143644995), // trên mốc thứ hai tới mốc thứ 3
-                      // ...
-                    ],
-                    mockInterval: Duration(seconds: 3),
                   );
 
                 default:
@@ -117,10 +140,15 @@ class _HomeWrapperState extends State<HomeWrapper> {
               listener: (context, state) {
                 switch (state) {
                   case UserEmergencyConfirm():
-                    final timerInstance = TimerHelper();
-                    userEmgInstance.setTimer(timerInstance);
+                    final timerHelper = TimerHelper()..onTimerDone = () {
+                      UserIsEmergencyCommand().execute();
+                    };
+                    userEmgInstance.setTimer(timerHelper);
                     userEmgInstance.startTimer();
-                    userEmgInstance.showEmergencyBottomSheet(context, 30);
+                    userEmgInstance.showEmergencyBottomSheet(
+                      context,
+                      AppConstant.TIME_TO_CALL_FOR_HELP,
+                    );
                     break;
                   default:
                 }
