@@ -1,7 +1,8 @@
 class NetworkConstant {
-  static const _IP = '192.168.1.90';
-  static const _PORT = '3001';
-  static const BASE_URL = 'http://${_IP}:${_PORT}/api/v1/';
+  static const _IP = '192.168.1.134';
+  static const _PORT = '3000';
+  static const _VER = 'v1';
+  static const BASE_URL = 'http://${_IP}:${_PORT}/api/${_VER}/';
   static const SIGN_UP = '${BASE_URL}auth/email/register';
   static const SIGN_IN = '${BASE_URL}auth/email/login';
   static String routingUrl(String polylines) =>

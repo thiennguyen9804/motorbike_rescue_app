@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "723764254473",
+    "project_id": "motorbike-rescue",
+    "storage_bucket": "motorbike-rescue.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:723764254473:android:2aedb0e848fc65319aa5d8",
+        "android_client_info": {
+          "package_name": "com.example.motorbike_rescue_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUIIK0Hwt8zYi4O5Mf3eFbqayaayaLEzw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

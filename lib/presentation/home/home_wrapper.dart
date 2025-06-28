@@ -1,17 +1,12 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:motorbike_rescue_app/core/configs/theme/app_theme.dart';
 import 'package:motorbike_rescue_app/core/constant/app_constant.dart';
-import 'package:motorbike_rescue_app/core/mapper/position_x.dart';
 import 'package:motorbike_rescue_app/presentation/home/command/user_is_emergency_command.dart';
 import 'package:motorbike_rescue_app/presentation/home/cubit/emergency_cubit.dart';
-import 'package:motorbike_rescue_app/presentation/home/cubit/instruction_cubit.dart';
 import 'package:motorbike_rescue_app/presentation/home/cubit/user_emergency_cubit.dart';
 import 'package:motorbike_rescue_app/presentation/home/helper_object/timer_helper.dart';
-import 'package:motorbike_rescue_app/presentation/home/instance/mock/mock_emergency_cubit.dart';
-import 'package:motorbike_rescue_app/presentation/home/instance/mock/mock_route_instruction_controller.dart';
 import 'package:motorbike_rescue_app/presentation/home/instance/route_instruction_controller.dart';
 import 'package:motorbike_rescue_app/presentation/home/instance/user_emergency_instance.dart';
 import 'package:motorbike_rescue_app/presentation/home/page/device_screen.dart';
@@ -36,6 +31,7 @@ class HomeWrapper extends StatefulWidget {
 
 class _HomeWrapperState extends State<HomeWrapper> {
   int _selectedIndex = 0;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final emergencyInstance = EmergencyInstance();
   // final timerHelper = TimerHelper()
   //   ..onTimerDone = () {
@@ -52,6 +48,13 @@ class _HomeWrapperState extends State<HomeWrapper> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _firebaseMessaging.requestPermission();
   }
 
   @override
@@ -127,9 +130,9 @@ class _HomeWrapperState extends State<HomeWrapper> {
                         context,
                         updatedInstructions[currentIndex],
                       );
-                      print(
+                      debugPrint(
                           'MockRouteInstructionController ${instructions[currentIndex]}');
-                      print(currentIndex);
+                      debugPrint(currentIndex.toString());
                     },
                   );
 
@@ -140,9 +143,10 @@ class _HomeWrapperState extends State<HomeWrapper> {
               listener: (context, state) {
                 switch (state) {
                   case UserEmergencyConfirm():
-                    final timerHelper = TimerHelper()..onTimerDone = () {
-                      UserIsEmergencyCommand().execute();
-                    };
+                    final timerHelper = TimerHelper()
+                      ..onTimerDone = () {
+                        UserIsEmergencyCommand().execute();
+                      };
                     userEmgInstance.setTimer(timerHelper);
                     userEmgInstance.startTimer();
                     userEmgInstance.showEmergencyBottomSheet(
