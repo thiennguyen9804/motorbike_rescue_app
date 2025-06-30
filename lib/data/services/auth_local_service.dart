@@ -26,7 +26,7 @@ class AuthLocalServiceImpl implements AuthLocalService {
   @override
   Tokens getTokens() {
     final str = mmkv.decodeString('tokens');
-    if(str == null) {
+    if (str == null) {
       throw NoTokensExceptions();
     }
     return Tokens.fromJson(jsonDecode(str));
@@ -36,17 +36,10 @@ class AuthLocalServiceImpl implements AuthLocalService {
   void writeTokens(Tokens tokens) {
     final data = jsonEncode(tokens.toJson());
     mmkv.encodeString('tokens', data);
-
   }
 
   @override
   void writeUserToLocal(LocalUser data) {
     mmkv.encodeString('localUser', jsonEncode(data.toJson()));
   }
-
 }
-
-
-
-
-

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:motorbike_rescue_app/core/configs/theme/app_theme.dart';
 import 'package:motorbike_rescue_app/core/constant/app_constant.dart';
+import 'package:motorbike_rescue_app/data/services/location_service.dart';
 import 'package:motorbike_rescue_app/presentation/home/command/user_is_emergency_command.dart';
 import 'package:motorbike_rescue_app/presentation/home/cubit/emergency_cubit.dart';
 import 'package:motorbike_rescue_app/presentation/home/cubit/user_emergency_cubit.dart';
@@ -13,6 +14,8 @@ import 'package:motorbike_rescue_app/presentation/home/page/device_screen.dart';
 import 'package:motorbike_rescue_app/presentation/home/instance/emergency_instance.dart';
 import 'package:motorbike_rescue_app/presentation/home/page/map_screen/map_screen.dart';
 import 'package:motorbike_rescue_app/presentation/home/page/user_screen/user_screen.dart';
+
+import '../../sl.dart';
 
 class HomeWrapper extends StatefulWidget {
   HomeWrapper({super.key, required this.onLogout}) {
@@ -52,9 +55,9 @@ class _HomeWrapperState extends State<HomeWrapper> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _firebaseMessaging.requestPermission();
+    // sl<LocationService>().scan();
   }
 
   @override

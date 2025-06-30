@@ -10,26 +10,32 @@ import 'package:motorbike_rescue_app/core/mapper/lat_lng_x.dart';
 import 'package:motorbike_rescue_app/core/mapper/list_num_x.dart';
 import 'package:motorbike_rescue_app/core/mapper/position_x.dart';
 import 'package:motorbike_rescue_app/core/network/dio_client.dart';
+import 'package:motorbike_rescue_app/data/dto/noti_created_dto.dart';
+import 'package:motorbike_rescue_app/data/services/listen_emergency_service.dart';
 import 'package:motorbike_rescue_app/presentation/home/data/instruction_ui.dart';
 import 'package:motorbike_rescue_app/sl.dart';
 
 part 'emergency_state.dart';
 
+// Cubit để listen khi có những người xung quanh bị tai nạn
 class EmergencyCubit extends Cubit<EmergencyState> {
-  EmergencyCubit() : super(EmergencyInitial());
+  EmergencyCubit() : super(EmergencyInitial()) {
+    sl<ListenEmergencyService>()
+        .listenForEmergency((NotiCreatedDto notCreatedDto) {
+      final destination = notCreatedDto.payload.position;
+      handleEmergency(destination);
+    });
+  }
 
-  void listenForEmergency() async {
-    await Future.delayed(const Duration(seconds: 5)); // Giả lập sự kiện tai nạn
-    final destination = LatLng(10.885145, 106.805006);
-
+  void handleEmergency(final LatLng destination) async {
     emit(EmergencyHappened(destination));
 
     await fetchRoute(destination);
   }
 
   @protected
-  Future<Position> getCurrentPosition() async  => await Geolocator.getCurrentPosition();
-
+  Future<Position> getCurrentPosition() async =>
+      await Geolocator.getCurrentPosition();
 
   Future<void> fetchRoute(LatLng destination) async {
     final my = await getCurrentPosition();
@@ -46,8 +52,8 @@ class EmergencyCubit extends Cubit<EmergencyState> {
       destination.toArr(),
     ]);
     try {
-      final res =
-          await sl<DioClient>().get(NetworkConstant.routingUrl(polylines));
+      final res = await sl<DioClient>()
+          .get(ServerNetworkConstant.routingUrl(polylines));
       final data = res.data;
       String geo = data['routes'][0]['geometry'];
       final temp = decodePolyline(geo);
@@ -55,19 +61,19 @@ class EmergencyCubit extends Cubit<EmergencyState> {
       final List<InstructionUi> instructions = parseInstructions(data);
 
       emit(RouteFetched(points, instructions));
-      print('points: $points');
+      debugPrint('points: $points');
     } on DioException catch (e) {
-      print('http error message: ${e.message}');
-      print('status code ${e.response?.statusCode ?? 'unknown status code'}');
-      print("❌ Lỗi kết nối API OSRM: $e");
+      debugPrint('http error message: ${e.message}');
+      debugPrint(
+          'status code ${e.response?.statusCode ?? 'unknown status code'}');
+      debugPrint("❌ Lỗi kết nối API OSRM: $e");
     } catch (e) {
-      print("Lỗi: $e");
+      debugPrint("Lỗi: $e");
     }
   }
 
   List<InstructionUi> parseInstructions(Map<String, dynamic> osrmData) {
     final steps = osrmData['routes'][0]['legs'][0]['steps'] as List;
-
 
     final res = List.generate(steps.length, (index) {
       final currentStep = steps[index];

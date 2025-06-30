@@ -20,7 +20,7 @@ class AuthApiServiceImpl implements AuthApiService {
   Future<Either<String, LogInRes>> logIn(AuthEmailLoginDto dto) async {
     try {
       final res = await sl<DioClient>().post(
-        NetworkConstant.SIGN_IN,
+        ServerNetworkConstant.SIGN_IN,
         data: dto.toJson(),
       );
       final loginRes = LogInRes.fromJson(res.data);
@@ -49,7 +49,7 @@ class AuthApiServiceImpl implements AuthApiService {
   @override
   Future<Tokens> getNewTokens(Tokens tokens) async {
     final res = await sl<DioClient>()
-        .post(NetworkConstant.TOKENS, data: tokens.toJson());
+        .post(ServerNetworkConstant.TOKENS, data: tokens.toJson());
     final newTokens = Tokens.fromJson(res.data);
     return newTokens;
   }
@@ -58,7 +58,7 @@ class AuthApiServiceImpl implements AuthApiService {
   Future<String?> signUp(AuthRegisterLoginDto dto) async {
     try {
       final res = await sl<DioClient>()
-          .post(NetworkConstant.SIGN_UP, data: dto.toJson());
+          .post(ServerNetworkConstant.SIGN_UP, data: dto.toJson());
       final loginRes = LogInRes.fromJson(res.data);
       return null;
     } on DioException catch (e) {

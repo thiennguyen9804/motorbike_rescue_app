@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 
 part 'user_emergency_state.dart';
 
+// Cubit khi bạn (người dùng) bị tai nạn
 class UserEmergencyCubit extends Cubit<UserEmergencyState> {
   UserEmergencyCubit() : super(UserEmergencyInitial());
 

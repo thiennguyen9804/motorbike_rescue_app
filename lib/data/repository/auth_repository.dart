@@ -48,9 +48,7 @@ class AuthRepositoryImpl implements AuthRepository {
       rethrow;
     }
   }
-  
+
   @override
-  Future<String?> register() async {
-    
-  }
+  Future<String?> register() async {}
 }
