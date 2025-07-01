@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:motorbike_rescue_app/core/configs/theme/app_theme.dart';
 import 'package:motorbike_rescue_app/core/constant/app_constant.dart';
-import 'package:motorbike_rescue_app/data/services/location_service.dart';
 import 'package:motorbike_rescue_app/presentation/home/command/user_is_emergency_command.dart';
 import 'package:motorbike_rescue_app/presentation/home/cubit/emergency_cubit.dart';
 import 'package:motorbike_rescue_app/presentation/home/cubit/user_emergency_cubit.dart';
@@ -15,6 +14,7 @@ import 'package:motorbike_rescue_app/presentation/home/instance/emergency_instan
 import 'package:motorbike_rescue_app/presentation/home/page/map_screen/map_screen.dart';
 import 'package:motorbike_rescue_app/presentation/home/page/user_screen/user_screen.dart';
 
+import '../../data/services/location_service.dart';
 import '../../sl.dart';
 
 class HomeWrapper extends StatefulWidget {
@@ -57,7 +57,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
   void initState() {
     super.initState();
     _firebaseMessaging.requestPermission();
-    // sl<LocationService>().scan();
+    sl<LocationService>().scan();
   }
 
   @override
@@ -75,8 +75,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
                 // ..listenForEmergency(),
                 ),
             BlocProvider<UserEmergencyCubit>(
-              create: (context) =>
-                  UserEmergencyCubit()..listenForUserEmergency(),
+              create: (context) => UserEmergencyCubit(),
             ),
           ],
           child: BlocListener<EmergencyCubit, EmergencyState>(

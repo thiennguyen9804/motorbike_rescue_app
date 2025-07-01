@@ -8,7 +8,7 @@ class ServerNetworkConstant {
   static String routingUrl(String polylines) =>
       'https://router.project-osrm.org/route/v1/driving/polyline($polylines)?steps=true';
   static const TOKENS = '${BASE_HTTP_URL}auth/refresh';
-  static const DEVICES_SCAN = '${BASE_HTTP_URL}/devices/scan';
+  static const DEVICES_SCAN = '${BASE_HTTP_URL}devices/scan';
   static const BASE_SOCKET_URL = 'ws://${_IP}:${_PORT}';
 }
 

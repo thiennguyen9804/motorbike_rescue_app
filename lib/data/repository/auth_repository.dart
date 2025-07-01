@@ -25,6 +25,7 @@ class AuthRepositoryImpl implements AuthRepository {
       (error) => Left(error),
       (loginRes) {
         final tokens = Tokens.fromLogInRes(loginRes);
+        debugPrint('AuthRepositoryImpl, login: ${tokens}');
         final localUser = LocalUser.fromLogInRes(loginRes);
         sl<AuthLocalService>().writeTokens(tokens);
         sl<AuthLocalService>().writeUserToLocal(localUser);

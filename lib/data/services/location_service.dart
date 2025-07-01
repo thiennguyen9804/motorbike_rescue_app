@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:motorbike_rescue_app/core/constant/network_constant.dart';
 import 'package:motorbike_rescue_app/core/mapper/position_x.dart';
 import 'package:motorbike_rescue_app/core/network/dio_client.dart';
+import 'package:motorbike_rescue_app/data/services/auth_local_service.dart';
 
 import '../../sl.dart';
 
@@ -16,11 +18,14 @@ abstract class LocationService {
 class LocationServiceImpl implements LocationService {
   Timer? _timer;
   Future<void> _scan(LatLng coor) async {
-    await sl<DioClient>().get(ServerNetworkConstant.DEVICES_SCAN,
-        queryParameters: {
-          'latitude': coor.latitude,
-          'longitude': coor.longitude
-        });
+    final tokens = sl<AuthLocalService>().getTokens();
+    await sl<DioClient>().get(
+      ServerNetworkConstant.DEVICES_SCAN,
+      options: Options(
+        headers: {'Authorization': 'Bearer ${tokens.token}'},
+      ),
+      queryParameters: {'latitude': coor.latitude, 'longitude': coor.longitude},
+    );
   }
 
   @override
@@ -30,7 +35,8 @@ class LocationServiceImpl implements LocationService {
         desiredAccuracy: LocationAccuracy.high,
       );
 
-      final coor = position.toLatLng();
+      // final coor = position.toLatLng();
+      final coor = LatLng(10.804610, 106.690774);
 
       await _scan(coor);
     });
