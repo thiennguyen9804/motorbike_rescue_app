@@ -14,7 +14,9 @@ class DioClient {
             // sendTimeout: const Duration(seconds: 3),
             // receiveTimeout: const Duration(seconds: 3),
           ),
-        )..interceptors.addAll([LoggerInterceptor()]);
+        )..interceptors.addAll([
+            // LoggerInterceptor(),
+          ]);
 
   // GET METHOD
   Future<Response> get(
@@ -105,6 +107,30 @@ class DioClient {
       );
       return response.data;
     } catch (e) {
+      rethrow;
+    }
+  }
+
+  // PATCH METHOD
+  Future<Response> patch(
+    String url, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    try {
+      final Response response = await _dio.patch(
+        url,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onReceiveProgress: onReceiveProgress,
+      );
+      return response;
+    } on DioException {
       rethrow;
     }
   }
